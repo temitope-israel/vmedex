@@ -139,7 +139,7 @@ export default function ContactContent() {
                 id="name"
                 name="name"
                 type="text"
-                placeholder="Alex Morgan"
+                placeholder="Chibuzor Ademide"
                 value={formData.name}
                 onChange={handleChange}
                 disabled={status === "submitting"}
@@ -158,7 +158,7 @@ export default function ContactContent() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="alex@company.com"
+                placeholder="chibuzoademide@mail.com"
                 value={formData.email}
                 onChange={handleChange}
                 disabled={status === "submitting"}

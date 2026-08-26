@@ -128,7 +128,7 @@ export default function EventsContent() {
             >
               <Link
                 href="/contact"
-                className="group relative block aspect-[4/5] overflow-hidden rounded-3xl bg-ink/5"
+                className="group relative block aspect-[4/5] overflow-hidden rounded-3xl bg-ink shadow-2xl"
               >
                 {/* Fallback background color before image loads */}
                 <Image
@@ -143,7 +143,7 @@ export default function EventsContent() {
 
                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
                   <div className="translate-y-4 transition-transform duration-500 ease-out group-hover:translate-y-0">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-primary mb-2 block">
+                    <span className="inline-block rounded-full bg-black/40 backdrop-blur-md border border-white/10 px-2.5 py-1 text-xs font-mono font-bold uppercase tracking-widest text-accent mb-2">
                       {tag}
                     </span>
                     <h3 className="text-2xl font-bold text-paper leading-tight">
@@ -256,190 +256,4 @@ export default function EventsContent() {
   );
 }
 
-// "use client";
 
-// import { motion } from "motion/react";
-// import Image from "next/image";
-// import Link from "next/link";
-// import {
-//   ArrowUpRight,
-//   Sparkles,
-//   Calendar,
-//   MessageCircle,
-//   Video,
-//   Package,
-// } from "lucide-react";
-
-// // Event types, pulled directly from the client brief
-// const eventTypes = [
-//   { image: "/event-corporate.jpg", title: "Corporate Events" },
-//   { image: "/event-conference.jpg", title: "Conferences & Seminars" },
-//   { image: "/event-wedding.jpg", title: "Weddings & Celebrations" },
-//   { image: "/event-product-launch.jpg", title: "Product Launches" },
-//   { image: "/event-red-carpet.jpg", title: "Red-Carpet Events" },
-//   { image: "/event-social.jpg", title: "Private & Social Events" },
-// ];
-
-// // Simple process overview — sets expectations for how booking works
-// const process = [
-//   {
-//     icon: MessageCircle,
-//     title: "Consultation",
-//     description: "We learn about your event and coverage needs.",
-//   },
-//   {
-//     icon: Calendar,
-//     title: "Coverage Plan",
-//     description: "A tailored plan for photography, video, or both.",
-//   },
-//   {
-//     icon: Video,
-//     title: "Live Coverage",
-//     description: "Our team captures every key moment on the day.",
-//   },
-//   {
-//     icon: Package,
-//     title: "Delivery",
-//     description: "Edited photos and video delivered shortly after.",
-//   },
-// ];
-
-// export default function EventsContent() {
-//   return (
-//     <div className="bg-paper">
-//       {/* Page header */}
-//       <section className="max-w-4xl mx-auto px-6 pt-32 pb-16 text-center">
-//         <motion.div
-//           initial={{ opacity: 0, y: 16 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold uppercase tracking-widest text-primary mb-6"
-//         >
-//           <Sparkles className="w-3.5 h-3.5" />
-//           <span>Events & Media Coverage</span>
-//         </motion.div>
-
-//         <motion.h1
-//           initial={{ opacity: 0, y: 24 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.7, delay: 0.15 }}
-//           className="text-4xl font-bold tracking-tight text-ink sm:text-6xl leading-[1.15]"
-//         >
-//           Every Moment, Covered
-//         </motion.h1>
-
-//         <motion.p
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.7, delay: 0.25 }}
-//           className="mt-6 max-w-xl mx-auto text-base text-ink/60"
-//         >
-//           End-to-end visual coverage and media support, for events of every
-//           scale.
-//         </motion.p>
-//       </section>
-
-//       {/* Event type grid */}
-//       <section className="max-w-6xl mx-auto px-6 pb-24">
-//         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-//           {eventTypes.map(({ image, title }, index) => (
-//             <motion.div
-//               key={title}
-//               initial={{ opacity: 0, y: 24 }}
-//               whileInView={{ opacity: 1, y: 0 }}
-//               viewport={{ once: true, amount: 0.3 }}
-//               transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
-//             >
-//               <Link
-//                 href="/contact"
-//                 className="group relative block h-64 overflow-hidden rounded-2xl"
-//               >
-//                 <Image
-//                   src={image}
-//                   alt={title}
-//                   fill
-//                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-//                 />
-//                 <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
-
-//                 <div className="relative z-10 flex h-full flex-col justify-end p-6">
-//                   <h3 className="text-lg font-semibold text-paper">{title}</h3>
-//                   <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-paper opacity-0 transition-opacity group-hover:opacity-100">
-//                     Book Coverage <ArrowUpRight size={14} />
-//                   </span>
-//                 </div>
-//               </Link>
-//             </motion.div>
-//           ))}
-//         </div>
-//       </section>
-
-//       {/* Process overview */}
-//       <section className="bg-ink px-6 py-24">
-//         <motion.div
-//           initial={{ opacity: 0, y: 16 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           viewport={{ once: true, amount: 0.3 }}
-//           transition={{ duration: 0.6 }}
-//           className="max-w-2xl mx-auto text-center mb-16"
-//         >
-//           <p className="text-sm font-semibold uppercase tracking-widest text-accent">
-//             How It Works
-//           </p>
-//           <h2 className="mt-3 text-3xl font-semibold text-paper sm:text-4xl">
-//             From Booking to Delivery
-//           </h2>
-//         </motion.div>
-
-//         <div className="max-w-5xl mx-auto grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-//           {process.map(({ icon: Icon, title, description }, index) => (
-//             <motion.div
-//               key={title}
-//               initial={{ opacity: 0, y: 20 }}
-//               whileInView={{ opacity: 1, y: 0 }}
-//               viewport={{ once: true, amount: 0.3 }}
-//               transition={{ duration: 0.5, delay: index * 0.1 }}
-//               className="text-center"
-//             >
-//               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-//                 <Icon size={22} />
-//               </div>
-//               <h3 className="mt-4 text-base font-semibold text-paper">
-//                 {title}
-//               </h3>
-//               <p className="mt-2 text-sm text-paper/60">{description}</p>
-//             </motion.div>
-//           ))}
-//         </div>
-//       </section>
-
-//       {/* Closing CTA */}
-//       <section className="max-w-2xl mx-auto px-6 py-32 text-center">
-//         <motion.h2
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           viewport={{ once: true, amount: 0.4 }}
-//           transition={{ duration: 0.6 }}
-//           className="text-3xl font-semibold text-ink sm:text-4xl"
-//         >
-//           Have an event coming up?
-//         </motion.h2>
-
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           viewport={{ once: true, amount: 0.4 }}
-//           transition={{ duration: 0.6, delay: 0.15 }}
-//           className="mt-8"
-//         >
-//           <Link
-//             href="/contact"
-//             className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-bold uppercase tracking-widest text-paper transition-colors hover:bg-primary-dark"
-//           >
-//             Book Coverage <ArrowUpRight size={16} />
-//           </Link>
-//         </motion.div>
-//       </section>
-//     </div>
-//   );
-// }
