@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SmoothScroll from "@/components/providers/SmoothScroll"
+import WhatsAppFloat from "@/components/ui/WhatsAppFloat"
 import Reveal from "@/components/ui/Reveal"
 import "./globals.css";
 
@@ -29,12 +30,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Reveal>
-
-        <Footer />
-        </Reveal>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Reveal>
+            <Footer />
+          </Reveal>
+          <WhatsAppFloat />
         </SmoothScroll>
       </body>
     </html>

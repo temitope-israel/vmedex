@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  FaInstagram,
-  FaTiktok,
-  FaWhatsapp,
-  FaFacebookF,
-  FaYoutube,
-} from "react-icons/fa6";
+// import {
+//   FaInstagram,
+//   FaTiktok,
+//   FaWhatsapp,
+//   FaFacebookF,
+//   FaYoutube,
+// } from "react-icons/fa6";
 import {
   HiOutlineEnvelope,
   HiOutlinePhone,
@@ -15,12 +15,32 @@ import {
   HiArrowUpRight,
 } from "react-icons/hi2";
 
+import {
+  FaInstagram,
+  FaTiktok,
+  FaWhatsapp,
+  FaFacebook,
+  FaLinkedin,
+} from "react-icons/fa";
+
 const socialLinks = [
-  { href: "https://instagram.com", icon: FaInstagram, label: "Instagram" },
-  { href: "https://tiktok.com", icon: FaTiktok, label: "TikTok" },
-  { href: "https://youtube.com", icon: FaYoutube, label: "YouTube" },
-  { href: "https://wa.me/2348000000000", icon: FaWhatsapp, label: "WhatsApp" },
-  { href: "https://facebook.com", icon: FaFacebookF, label: "Facebook" },
+  {
+    href: "https://www.instagram.com/vmedexdigital3",
+    icon: FaInstagram,
+    label: "Instagram",
+  },
+  {
+    href: "https://vm.tiktok.com/ZS9Bs6CpgH5Yv-QRI4E/",
+    icon: FaTiktok,
+    label: "TikTok",
+  },
+  {
+    href: "https://www.linkedin.com/in/vmedex-digital-ltd-971992432",
+    icon: FaLinkedin,
+    label: "LinkedIn",
+  },
+  { href: "https://wa.me/2349035585681", icon: FaWhatsapp, label: "WhatsApp" }, // now real, per the flyer number
+  // { href: "https://facebook.com", icon: FaFacebook, label: "Facebook" }, // still placeholder
 ];
 
 const navLinks = [
@@ -113,23 +133,30 @@ export default function Footer() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Contact Box */}
-                <div className="p-4 rounded-2xl bg-paper/5 border border-paper/10 flex flex-col gap-2.5 text-xs text-paper/70 font-mono">
+                <div className="p-4 rounded-2xl bg-paper/5 border border-paper/10 flex flex-col gap-3 text-xs text-paper/70 font-mono">
                   <span className="text-[10px] font-bold text-primary uppercase tracking-wider block">
                     Direct Reach
                   </span>
                   <a
-                    href="mailto:hello@vmedexdigital.com"
-                    className="hover:text-primary transition-colors flex items-center gap-2"
+                    href="mailto:mailto:info@vmedexdigital.com"
+                    className="hover:text-primary transition-colors flex items-center gap-2 text-[10px]"
                   >
                     <HiOutlineEnvelope className="w-4 h-4 text-primary shrink-0" />
-                    <span className="truncate">hello@vmedexdigital.com</span>
+                    <span className="truncate">info@vmedexdigital.com</span>
                   </a>
                   <a
-                    href="tel:+2348000000000"
-                    className="hover:text-primary transition-colors flex items-center gap-2"
+                    href="mailto:mailto:vmedexdigital@gmail.com"
+                    className="hover:text-primary transition-colors flex items-center gap-2 text-[10px]"
+                  >
+                    <HiOutlineEnvelope className="w-4 h-4 text-primary shrink-0" />
+                    <span className="truncate">vmedexdigital@gmail.com</span>
+                  </a>
+                  <a
+                    href="tel:+2348166144126"
+                    className="hover:text-primary transition-colors flex items-center gap-2 text-[10px]"
                   >
                     <HiOutlinePhone className="w-4 h-4 text-primary shrink-0" />
-                    <span>+234 800 000 0000</span>
+                    <span>+234 816 614 4126</span>
                   </a>
                 </div>
 
@@ -140,11 +167,11 @@ export default function Footer() {
                   </span>
                   <div className="flex items-center gap-2">
                     <HiOutlineMapPin className="w-4 h-4 text-primary shrink-0" />
-                    <span>Lagos, Nigeria</span>
+                    <span className="text-[10px]">Lagos, Nigeria</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <HiOutlineClock className="w-4 h-4 text-primary shrink-0" />
-                    <span>Mon - Sat: 8AM - 6PM</span>
+                    <span className="text-[10px]">Mon - Sat: 8AM - 6PM</span>
                   </div>
                 </div>
               </div>

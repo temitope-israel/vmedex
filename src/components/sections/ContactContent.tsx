@@ -101,18 +101,18 @@ export default function ContactContent() {
             {/* Matches the same placeholder contact details used in the Footer — swap both together once real info arrives */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 text-xs font-semibold uppercase tracking-wider text-ink/70">
               <a
-                href="mailto:hello@vmedexdigital.com"
+                href="mailto:info@vmedexdigital.com"
                 className="hover:text-primary transition-colors flex items-center gap-1"
               >
-                <span>hello@vmedexdigital.com</span>
+                <span>info@vmedexdigital.com</span>
                 <ArrowUpRight size={14} />
               </a>
 
               <a
-                href="tel:+2348000000000"
+                href="tel:+2348166144126"
                 className="hover:text-primary transition-colors flex items-center gap-1"
               >
-                <span>+234 800 000 0000</span>
+                <span>+234 816 614 4126</span>
                 <ArrowUpRight size={14} />
               </a>
             </div>
