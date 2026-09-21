@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import SmoothScroll from "@/components/providers/SmoothScroll"
-import WhatsAppFloat from "@/components/ui/WhatsAppFloat"
-import Reveal from "@/components/ui/Reveal"
+import SmoothScroll from "@/components/providers/SmoothScroll";
+import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
+import Reveal from "@/components/ui/Reveal";
 import "./globals.css";
+import IntroGate from "@/components/sections/IntroGate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,14 +30,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SmoothScroll>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Reveal>
-            <Footer />
-          </Reveal>
-          <WhatsAppFloat />
-        </SmoothScroll>
+        <IntroGate>
+          <SmoothScroll>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Reveal>
+              <Footer />
+            </Reveal>
+            <WhatsAppFloat />
+          </SmoothScroll>
+        </IntroGate>
       </body>
     </html>
   );
