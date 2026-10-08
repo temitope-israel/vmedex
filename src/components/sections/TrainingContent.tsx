@@ -131,7 +131,7 @@ export default function TrainingContentV4() {
         <div className="max-w-6xl mx-auto grid divide-y md:divide-y-0 md:divide-x divide-ink/10 md:grid-cols-4">
           <LedgerItem
             title="PROGRAM DATES"
-            main="Oct 12 – Oct 31"
+            main="OCT 19, 2026 – Nov 7TH, 2026"
             sub="3 Weeks Intensive"
           />
           <LedgerItem
@@ -141,7 +141,7 @@ export default function TrainingContentV4() {
           />
           <LedgerItem
             title="TUITION FEE"
-            main="₦250,000"
+            main="₦150,000"
             sub="Installment Plans Open"
           />
           <LedgerItem
@@ -236,7 +236,7 @@ export default function TrainingContentV4() {
             <p className="text-xs font-mono uppercase tracking-widest text-paper/40">
               FULL TUITION
             </p>
-            <div className="text-5xl font-black text-paper mt-2">₦250,000</div>
+            <div className="text-5xl font-black text-paper mt-2">₦150,000</div>
             <p className="text-xs text-accent font-mono mt-1">
               Flexible Installments Accepted
             </p>
