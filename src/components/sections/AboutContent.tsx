@@ -178,7 +178,7 @@ export default function AboutContent() {
             What We Produce
           </span>
           <h2 className="text-3xl font-bold tracking-tight mt-1">
-            One Team, Every Format
+            Beyond content. Beyond expectation.
           </h2>
         </motion.div>
 
@@ -279,24 +279,22 @@ export default function AboutContent() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-12 text-paper/60 max-w-xl mx-auto"
           >
-            Today, VMedex Digital is growing as a creative production company
-            with a vision to deliver world-class visual experiences from Nigeria
-            to the world.
+            Today, VMedex Digital is a creative production brand with a vision
+            to deliver world-class visual experiences from Nigeria to the world.
           </motion.p>
         </div>
       </section>
 
-     
       {/* 6. SUMMARY — the client's second "About VMedex Digital" block, as a distinct closing statement */}
       <section className="max-w-4xl mx-auto px-6 py-24 text-center">
-        <motion.span
+        {/* <motion.span
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-xs font-bold uppercase tracking-widest text-primary mb-6 block"
         >
           About VMedex Digital
-        </motion.span>
+        </motion.span> */}
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -305,12 +303,13 @@ export default function AboutContent() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-2xl sm:text-3xl font-medium text-ink leading-snug"
         >
-          VMedex Digital is a creative media production company transforming
-          ideas into powerful visual experiences — combining creativity,
-          technology, and technical excellence to bring every vision to life.
+          At VMedex Digital, we turn imagination into visual reality. Through
+          exceptional creative media production, we transform ideas into
+          powerful visual experiences, combining creativity, technology, and
+          technical excellence to bring every vision to life.
         </motion.p>
 
-        <motion.p
+        {/* <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -320,7 +319,7 @@ export default function AboutContent() {
           But for us, production is more than what happens in front of the
           camera. It&apos;s about people, purpose, and the story behind every
           frame.
-        </motion.p>
+        </motion.p> */}
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}

@@ -83,7 +83,7 @@ export default function Footer() {
             </div>
 
             {/* Social Pill Buttons */}
-            <div className="mt-8">
+            <div className="mt-14">
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-primary block mb-3">
                 Follow Us
               </span>

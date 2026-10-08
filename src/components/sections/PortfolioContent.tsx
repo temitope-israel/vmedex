@@ -13,7 +13,6 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
-
 interface GalleryItem {
   id: string;
   category: string;
@@ -139,7 +138,7 @@ export default function PortfolioContent() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl leading-[1.08] text-ink"
         >
-          A Look At Our Craft
+          Our Craft
         </motion.h1>
       </section>
 

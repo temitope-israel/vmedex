@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
@@ -11,6 +11,8 @@ import {
   PartyPopper,
   ArrowUpRight,
   CheckCircle2,
+  Play,
+  Pause,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -22,7 +24,7 @@ const services = [
     title: "Cinematography & Video",
     tagline: "4K Cinema & Commercial Video",
     description:
-      "High-end corporate films, brand storytelling, documentary coverage, and cinematic color grading tailored for broadcast and web.",
+      "Visual storytelling and production services, shaped by cinematic technique and refined narrative craft.",
     features: ["Color Grading", "Multi-Cam Setup", "Drone / Aerial Footage"],
   },
   {
@@ -39,6 +41,7 @@ const services = [
     id: "03",
     icon: Sparkles,
     image: "/content-creation.jpg",
+    video: "/content-creation.mp4",
     title: "Content Creation",
     tagline: "Social & Digital Campaigns",
     description:
@@ -52,7 +55,7 @@ const services = [
     title: "Training & Masterclasses",
     tagline: "Capacity Building Programs",
     description:
-      "Hands-on practical training in camera operations, lighting setups, sound engineering, and post-production workflows.",
+      "Hands-on training programmes that equip individuals and organisations across Africa with practical, relevant, and technical skills in photography, videography, cinematography, content creation, and creative technologies.",
     features: ["1-on-1 Mentorship", "Certifications", "Practical Workshops"],
   },
   {
@@ -67,12 +70,65 @@ const services = [
   },
 ];
 
+function InteractiveVideoPlayer({
+  src,
+  poster,
+}: {
+  src: string;
+  poster?: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  const togglePlay = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!videoRef.current) return;
+
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  return (
+    <div className="relative w-full h-full group">
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="w-full h-full object-cover"
+      />
+
+      <button
+        onClick={togglePlay}
+        type="button"
+        aria-label={isPlaying ? "Pause video" : "Play video"}
+        className="absolute top-4 right-4 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-primary hover:scale-110 active:scale-95 cursor-pointer"
+      >
+        {isPlaying ? (
+          <Pause className="w-4 h-4 fill-current" />
+        ) : (
+          <Play className="w-4 h-4 fill-current translate-x-0.5" />
+        )}
+      </button>
+    </div>
+  );
+}
+
 export default function ServicesOverview() {
   const [activeService, setActiveService] = useState(services[0]);
 
   return (
     <section className="max-w-7xl text-center mx-auto px-6 py-28 relative">
-      {/* Section header */}
       <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold uppercase tracking-widest text-primary mb-3">
         <Sparkles className="w-3.5 h-3.5" />
         <span>What We Do</span>
@@ -83,27 +139,31 @@ export default function ServicesOverview() {
           Services Crafted for Maximum Impact
         </h2>
 
-        {/* Added Subtitle Paragraph */}
         <p className="mt-4 text-sm sm:text-base text-ink/70 max-w-lg mx-auto">
           Trusted by industry leaders, corporate partners, and brands to deliver
           uncompromising visual excellence.
         </p>
       </div>
 
-      {/* Split interactive layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        {/* Left column: interactive service list */}
         <div className="lg:col-span-7 flex flex-col gap-3">
           {services.map((service) => {
             const isActive = activeService.id === service.id;
             const Icon = service.icon;
 
             return (
-              <button
+              <div
                 key={service.id}
-                type="button"
+                role="button"
+                tabIndex={0}
                 onMouseEnter={() => setActiveService(service)}
                 onClick={() => setActiveService(service)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveService(service);
+                  }
+                }}
                 aria-expanded={isActive}
                 className={`group relative w-full text-left p-6 rounded-2xl cursor-pointer transition-all duration-300 border ${
                   isActive
@@ -155,13 +215,20 @@ export default function ServicesOverview() {
                       className="overflow-hidden"
                     >
                       <div className="lg:hidden relative h-48 w-full rounded-xl overflow-hidden mt-4">
-                        <Image
-                          src={service.image}
-                          alt={service.title}
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+                        {service.video ? (
+                          <InteractiveVideoPlayer
+                            src={service.video}
+                            poster={service.image}
+                          />
+                        ) : (
+                          <Image
+                            src={service.image}
+                            alt={service.title}
+                            fill
+                            className="object-cover"
+                          />
+                        )}
+                        {/* <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent pointer-events-none" /> */}
                       </div>
 
                       <p className="mt-4 text-sm text-ink/75 leading-relaxed">
@@ -192,7 +259,7 @@ export default function ServicesOverview() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -209,17 +276,24 @@ export default function ServicesOverview() {
                 transition={{ duration: 0.4 }}
                 className="relative h-full w-full"
               >
-                <Image
-                  src={activeService.image}
-                  alt={activeService.title}
-                  fill
-                  priority
-                  className="object-cover"
-                />
+                {activeService.video ? (
+                  <InteractiveVideoPlayer
+                    src={activeService.video}
+                    poster={activeService.image}
+                  />
+                ) : (
+                  <Image
+                    src={activeService.image}
+                    alt={activeService.title}
+                    fill
+                    priority
+                    className="object-cover"
+                  />
+                )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-                <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/15 text-white">
+                <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/15 text-white z-10">
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-mono text-primary font-bold uppercase tracking-widest">

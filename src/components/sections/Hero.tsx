@@ -94,9 +94,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mt-6 max-w-2xl text-base sm:text-xl text-white/80 font-normal leading-relaxed"
         >
-          High-end photography, cinematography, and creative visual storytelling
-          for ambitious brands, high-profile events, and individuals who demand
-          excellence.
+          Premium photography, cinematography, and visual storytelling for
+          visionary brands, prestigious events, and individuals with expectional
+          taste for excellence.
         </motion.p>
 
         {/* Action Buttons */}

@@ -42,11 +42,12 @@ export default function AboutTeaser() {
         </h2>
 
         <p className="mt-5 text-base text-ink/65 leading-relaxed">
-          VMedex Digital is a creative media and digital solutions company
-          focused on capturing, creating, and delivering compelling visual
-          experiences for individuals, brands, organisations, and events. We
-          combine creativity, technical expertise, and storytelling to produce
-          content that goes beyond simply documenting moments.
+          VMedex Digital is a creative media brand focused on capturing,
+          creating, and delivering compelling visual experiences for
+          individuals, brands, organizations, and events. We combine creativity,
+          practical skill; compelling storytelling and intentional execution to
+          produce content that goes beyond simply documenting moments, that goes
+          beyond expectation.
         </p>
 
         <Link
