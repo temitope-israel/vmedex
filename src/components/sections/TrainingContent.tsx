@@ -1,75 +1,83 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
+import {ICONS} from "@/lib/icons";
 import {
-  Camera,
-  Lightbulb,
-  LayoutGrid,
-  Scissors,
-  Move3d,
-  BookOpen,
-  Radio,
-  Calendar,
-  MapPin,
-  Wallet,
+
+
   MessageCircle,
   Phone,
   Mail,
   ArrowUpRight,
-  Award,
   CheckCircle2,
-  Clapperboard,
   Plus,
 } from "lucide-react";
-
-const curriculum = [
-  {
-    num: "01",
-    icon: Camera,
-    label: "Camera Mastery",
-    desc: "Manual exposure, focal geometry, depth of field & optics selection.",
-  },
-  {
-    num: "02",
-    icon: Lightbulb,
-    label: "Cinematic Lighting",
-    desc: "Keying, ambient fill, diffusion techniques & high-key vs low-key mood.",
-  },
-  {
-    num: "03",
-    icon: LayoutGrid,
-    label: "Framing & Composition",
-    desc: "Rule of thirds, golden ratio, subject blocking & spatial depth.",
-  },
-  {
-    num: "04",
-    icon: Move3d,
-    label: "Camera Movement",
-    desc: "Gimbal operations, dolly tracking, organic handheld & shot rhythm.",
-  },
-  {
-    num: "05",
-    icon: Scissors,
-    label: "Post-Production Suite",
-    desc: "Color wheels, LUT application, audio mixing & non-linear editing.",
-  },
-  {
-    num: "06",
-    icon: BookOpen,
-    label: "Visual Direction",
-    desc: "Deconstructing scripts, shot listing, storyboarding & directing talent.",
-  },
-  {
-    num: "07",
-    icon: Radio,
-    label: "Live Broadcast",
-    desc: "Multi-camera switching rigs, continuous video signal & live stream gear.",
-  },
-];
+import type { Cohort, CurriculumItem } from "@/lib/training";
+import { formatDateRange, formatNaira, hasEnded } from "@/lib/format";
 
 const REGISTER_URL = "https://vmedexdigital.com/registration-form/";
+const WHATSAPP_URL = "https://wa.me/2349035585681";
 
-export default function TrainingContentV4() {
+// Shown until the admin uploads a flyer — change to your new flyer's filename if different
+const DEFAULT_FLYER = "/new-training-flyer.jpg";
+
+// The database stores an icon *name*; this maps it to the real component.
+// The admin's icon dropdown will offer exactly these keys.
+
+type Props = {
+  cohort: Cohort | null;
+  curriculum: CurriculumItem[];
+};
+
+export default function TrainingContent({ cohort, curriculum }: Props) {
+  // Registration is open only if there's an active cohort that hasn't ended yet
+  const open = cohort !== null && !hasEnded(cohort.endDate);
+
+  const flyerSrc = cohort?.flyerPath
+    ? `/api/flyer/${cohort.flyerPath}` // built in the flyer-upload step
+    : DEFAULT_FLYER;
+
+  const ledger =
+    open && cohort
+      ? [
+          {
+            title: "PROGRAM DATES",
+            main: formatDateRange(cohort.startDate, cohort.endDate),
+            sub: cohort.durationNote,
+          },
+          {
+            title: "LOCATION",
+            main: cohort.location,
+            sub: cohort.locationNote,
+          },
+          {
+            title: "TUITION FEE",
+            main: formatNaira(cohort.feeAmount),
+            sub: cohort.feeNote,
+          },
+          ...(cohort.certificationTitle
+            ? [
+                {
+                  title: "CERTIFICATION",
+                  main: cohort.certificationTitle,
+                  sub: cohort.certificationNote,
+                },
+              ]
+            : []),
+        ]
+      : [
+          {
+            title: "NEXT COHORT",
+            main: "Coming Soon",
+            sub: "Dates will be announced shortly",
+          },
+          {
+            title: "LOCATION",
+            main: "Lagos, Nigeria",
+            sub: "Physical Studio Access",
+          },
+        ];
+
   return (
     <div className="bg-paper text-ink selection:bg-accent selection:text-ink min-h-screen font-sans">
       {/* --- HERO SECTION --- */}
@@ -111,14 +119,14 @@ export default function TrainingContentV4() {
               </p>
 
               <div className="pt-2 flex flex-wrap items-center gap-4">
-                <RegisterButton />
+                <CtaButton open={open} />
               </div>
             </div>
 
             {/* Right Column: Image */}
             <div className="lg:col-span-6">
               <img
-                src="/new-training-flyer.jpg"
+                src={flyerSrc}
                 alt="Practical Cinematography Bootcamp"
                 className="w-full h-auto rounded-lg object-cover shadow-lg"
               />
@@ -126,29 +134,18 @@ export default function TrainingContentV4() {
           </div>
         </div>
       </section>
+
       {/* --- PROGRAM DETAILS LEDGER --- */}
       <section className="border-b border-ink/10 bg-white">
         <div className="max-w-6xl mx-auto grid divide-y md:divide-y-0 md:divide-x divide-ink/10 md:grid-cols-4">
-          <LedgerItem
-            title="PROGRAM DATES"
-            main="OCT 19, 2026 – Nov 7TH, 2026"
-            sub="3 Weeks Intensive"
-          />
-          <LedgerItem
-            title="LOCATION"
-            main="Lagos, Nigeria"
-            sub="Physical Studio Access"
-          />
-          <LedgerItem
-            title="TUITION FEE"
-            main="₦150,000"
-            sub="Installment Plans Open"
-          />
-          <LedgerItem
-            title="CERTIFICATION"
-            main="Verified Award"
-            sub="Portfolio Film Defense"
-          />
+          {ledger.map((item) => (
+            <LedgerItem
+              key={item.title}
+              title={item.title}
+              main={item.main}
+              sub={item.sub}
+            />
+          ))}
         </div>
       </section>
 
@@ -164,44 +161,47 @@ export default function TrainingContentV4() {
             </h2>
           </div>
           <p className="text-xs font-mono text-ink/50 uppercase tracking-widest">
-            7 COMPREHENSIVE UNITS
+            {curriculum.length} COMPREHENSIVE UNITS
           </p>
         </div>
 
         {/* List Rows */}
         <div className="divide-y divide-ink/10">
-          {curriculum.map(({ num, icon: Icon, label, desc }, idx) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.04 }}
-              className="py-8 grid sm:grid-cols-12 gap-4 items-center hover:bg-white/80 transition-colors px-4 -mx-4 rounded-xl group"
-            >
-              <div className="sm:col-span-1 text-xs font-mono font-bold text-ink/30 group-hover:text-primary transition-colors">
-                {num}
-              </div>
-
-              <div className="sm:col-span-4 flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-paper transition-colors">
-                  <Icon size={18} />
+          {curriculum.map(({ id, icon, label, description }, idx) => {
+            const Icon = (ICONS[icon] ?? ICONS.clapperboard).Icon;
+            return (
+              <motion.div
+                key={id}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.04 }}
+                className="py-8 grid sm:grid-cols-12 gap-4 items-center hover:bg-white/80 transition-colors px-4 -mx-4 rounded-xl group"
+              >
+                <div className="sm:col-span-1 text-xs font-mono font-bold text-ink/30 group-hover:text-primary transition-colors">
+                  {String(idx + 1).padStart(2, "0")}
                 </div>
-                <h3 className="text-lg font-bold text-ink">{label}</h3>
-              </div>
 
-              <div className="sm:col-span-6 text-sm text-ink/60 leading-relaxed">
-                {desc}
-              </div>
+                <div className="sm:col-span-4 flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-paper transition-colors">
+                    <Icon size={18} />
+                  </div>
+                  <h3 className="text-lg font-bold text-ink">{label}</h3>
+                </div>
 
-              <div className="sm:col-span-1 flex justify-end">
-                <Plus
-                  size={18}
-                  className="text-ink/20 group-hover:text-primary group-hover:rotate-45 transition-all duration-300"
-                />
-              </div>
-            </motion.div>
-          ))}
+                <div className="sm:col-span-6 text-sm text-ink/60 leading-relaxed">
+                  {description}
+                </div>
+
+                <div className="sm:col-span-1 flex justify-end">
+                  <Plus
+                    size={18}
+                    className="text-ink/20 group-hover:text-primary group-hover:rotate-45 transition-all duration-300"
+                  />
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
@@ -213,7 +213,7 @@ export default function TrainingContentV4() {
               ENROLLMENT INFORMATION
             </span>
             <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tight mt-4">
-              SECURE YOUR SLOT
+              {open ? "SECURE YOUR SLOT" : "STAY IN THE LOOP"}
             </h2>
             <p className="mt-6 text-paper/70 leading-relaxed max-w-lg">
               Cohorts are kept strictly limited to ensure direct access to
@@ -234,15 +234,19 @@ export default function TrainingContentV4() {
 
           <div className="md:col-span-5 bg-white/5 border border-white/10 rounded-3xl p-8 sm:p-10">
             <p className="text-xs font-mono uppercase tracking-widest text-paper/40">
-              FULL TUITION
+              {open ? "FULL TUITION" : "NEXT COHORT"}
             </p>
-            <div className="text-5xl font-black text-paper mt-2">₦150,000</div>
+            <div className="text-5xl font-black text-paper mt-2 md:text-4xl">
+              {open && cohort ? formatNaira(cohort.feeAmount) : "Soon"}
+            </div>
             <p className="text-xs text-accent font-mono mt-1">
-              Flexible Installments Accepted
+              {open && cohort
+                ? cohort.feeNote
+                : "Message us to be told when registration reopens"}
             </p>
 
             <div className="mt-8 pt-8 border-t border-white/10">
-              <RegisterButton variant="accent" />
+              <CtaButton variant="accent" open={open} />
             </div>
           </div>
         </div>
@@ -304,7 +308,7 @@ function LedgerItem({
 }: {
   title: string;
   main: string;
-  sub: string;
+  sub?: string | null;
 }) {
   return (
     <div className="p-8">
@@ -312,20 +316,22 @@ function LedgerItem({
         {title}
       </p>
       <p className="text-xl font-black text-ink mt-2">{main}</p>
-      <p className="text-xs text-ink/60 mt-0.5">{sub}</p>
+      {sub && <p className="text-xs text-ink/60 mt-0.5">{sub}</p>}
     </div>
   );
 }
 
-// Button Helper
-function RegisterButton({
+// Button Helper — registers while a cohort is open, otherwise points to WhatsApp
+function CtaButton({
   variant = "primary",
+  open,
 }: {
   variant?: "primary" | "accent";
+  open: boolean;
 }) {
   return (
     <motion.a
-      href={REGISTER_URL}
+      href={open ? REGISTER_URL : WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
       whileHover={{ scale: 1.02 }}
@@ -336,8 +342,9 @@ function RegisterButton({
           : "bg-accent text-ink hover:bg-white"
       }`}
     >
-      <span>Register Now</span>
+      <span>{open ? "Register Now" : "Ask About Next Cohort"}</span>
       <ArrowUpRight size={16} />
     </motion.a>
   );
 }
+

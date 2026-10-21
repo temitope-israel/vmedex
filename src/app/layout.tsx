@@ -30,7 +30,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <IntroGate>
+        {children}
+        {/* <IntroGate>
           <SmoothScroll>
             <Header />
             <main className="flex-1">{children}</main>
@@ -39,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Reveal>
             <WhatsAppFloat />
           </SmoothScroll>
-        </IntroGate>
+        </IntroGate> */}
       </body>
     </html>
   );
