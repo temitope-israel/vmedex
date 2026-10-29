@@ -6,5 +6,8 @@ export default async function PanelLayout({children}: {children: React.ReactNode
     const session= await getSession();
     if(!session) redirect("/admin/login");
 
-    return <AdminShell email={session.email}>{children}</AdminShell>
-}
+return (
+  <AdminShell email={session.email} role={session.role}>
+    {children}
+  </AdminShell>
+);}

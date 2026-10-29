@@ -7,10 +7,13 @@ import {
   Clapperboard,
   ExternalLink,
   ListOrdered,
+  KeyRound,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 import LogoutButton from "@/components/admin/LogoutButton";
 import React from "react";
+import type { AccountRole } from "@/lib/constants";
 
 type NavItem = {
   href: string;
@@ -18,6 +21,7 @@ type NavItem = {
   icon: LucideIcon;
   matchPrefixes?: string[]; // extra paths that should also highlight this item
   soon?: boolean;
+  adminOnly?: boolean;
 };
 
 const navItems: NavItem[] = [
@@ -33,6 +37,8 @@ const navItems: NavItem[] = [
     label: "Curriculum",
     icon: ListOrdered,
   },
+  { href: "/admin/users", label: "Users", icon: Users, adminOnly: true },
+  { href: "/admin/account", label: "Account", icon: KeyRound },
 ];
 
 // "soon" items are shown but not clickable until we build them
@@ -48,9 +54,11 @@ const navItems: NavItem[] = [
 
 export default function AdminShell({
   email,
+  role,
   children,
 }: {
   email: string;
+  role: AccountRole;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -84,7 +92,7 @@ export default function AdminShell({
 
         {/* Navigation: a scrolling row on phones, a column on desktop */}
         <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-1 md:flex-col md:overflow-visible md:py-4">
-          {navItems.map((item) => {
+          {navItems.filter((item) => !item.adminOnly || role === "admin").map((item) => {
             const Icon = item.icon;
 
             if (item.soon) {
@@ -131,7 +139,7 @@ export default function AdminShell({
 
         {/* Account block, desktop only */}
         <div className="hidden md:block border-t border-white/10 px-6 py-5">
-          <p className="truncate text-sm text-paper/50">{email}</p>
+          <p className="truncate text-sm text-paper/50">{email} · {role}</p>
           <div className="mt-2">
             <LogoutButton />
           </div>

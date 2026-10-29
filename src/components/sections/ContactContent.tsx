@@ -10,6 +10,7 @@ import {
   Loader2,
   ArrowUpRight,
 } from "lucide-react";
+import { apiRequest } from "@/lib/api-client";
 
 const services = [
   "Photography",
@@ -28,6 +29,7 @@ export default function ContactContent() {
     phone: "",
     service: "",
     message: "",
+    website: "",
   });
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,27 +56,27 @@ export default function ContactContent() {
     setStatus("submitting");
     setErrorMessage("");
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+    const result = await apiRequest("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Something went wrong.");
-      }
-
-      setStatus("success");
-      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
-    } catch (error) {
+    if (!result.ok) {
       setStatus("error");
-      setErrorMessage(
-        error instanceof Error ? error.message : "Something went wrong.",
-      );
+      setErrorMessage(result.error);
+      return;
     }
+
+    setStatus("success");
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      service: "",
+      message: "",
+      website: "",
+    });
   };
 
   return (
@@ -127,6 +129,23 @@ export default function ContactContent() {
           onSubmit={handleSubmit}
           className="pt-12 space-y-10"
         >
+          {/* Honeypot: invisible to people, irresistible to bots */}
+          <div
+            aria-hidden="true"
+            className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+          >
+            <label>
+              Website
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={formData.website}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
           <div className="grid sm:grid-cols-2 gap-8">
             <div className="relative group">
               <label

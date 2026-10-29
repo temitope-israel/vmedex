@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { getCohortById, type AdminCohort } from "@/lib/training-admin";
 import CohortForm from "@/components/admin/CohortForm";
+import FlyerUploader from "@/components/admin/FlyerUploader";
 import LoadError from "@/components/admin/LoadError";
 
 export const metadata: Metadata = {
@@ -43,7 +44,9 @@ export default async function EditCohortPage({
       <h1 className="mt-2 text-3xl font-black tracking-tight text-ink">
         Edit cohort
       </h1>
-      <div className="mt-8">
+
+      <div className="mt-8 flex flex-col gap-6">
+        <FlyerUploader cohortId={cohort.id} flyerToken={cohort.flyerPath} />
         <CohortForm cohort={cohort} />
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { ICON_KEYS } from "@/lib/icons";
+import { MIN_PASSWORD_LENGTH, MAX_PASSWORD_BYTES, ACCOUNT_ROLES, type AccountRole } from "./constants";
 
 export type CohortInput = {
   name: string;
@@ -126,4 +127,46 @@ export function parseOrder(body: unknown): OrderParseResult {
     return { ok: false, error: "Invalid order." };
   }
   return { ok: true, ids };
+}
+
+// Returns a message if the password is unacceptable, or null if it's fine
+export function checkNewPassword(password: unknown): string | null {
+  if (typeof password !== "string") return "Password is required.";
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
+  }
+  if (Buffer.byteLength(password, "utf8") > MAX_PASSWORD_BYTES) {
+    return "That password is too long. Please use fewer characters.";
+  }
+  return null;
+}
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export type AccountInput = { email: string; role: AccountRole; password: string };
+
+export type AccountParseResult =
+  | { ok: true; data: AccountInput }
+  | { ok: false; error: string };
+
+export function parseAccountInput(body: unknown): AccountParseResult {
+  if (typeof body !== "object" || body === null) {
+    return { ok: false, error: "Invalid request." };
+  }
+  const b = body as Record<string, unknown>;
+
+  const email = clean(b.email).toLowerCase();
+  if (!email || email.length > 254 || !EMAIL_PATTERN.test(email)) {
+    return { ok: false, error: "Enter a valid email address." };
+  }
+  if (!ACCOUNT_ROLES.includes(b.role as AccountRole)) {
+    return { ok: false, error: "Choose a role." };
+  }
+  const passwordError = checkNewPassword(b.password);
+  if (passwordError) return { ok: false, error: passwordError };
+
+  return {
+    ok: true,
+    data: { email, role: b.role as AccountRole, password: b.password as string },
+  };
 }

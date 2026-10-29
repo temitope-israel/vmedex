@@ -2,7 +2,7 @@ import type { RowDataPacket, ResultSetHeader } from "mysql2";
 import type { PoolConnection } from "mysql2/promise";
 import { pool } from "@/lib/db";
 import { withLock } from "@/lib/db-lock";
-
+import { randomBytes } from "crypto";
 import type { CohortInput } from "@/lib/validation";
 const COHORT_LOCK = "vmedex_cohort_write";
 
@@ -137,5 +137,50 @@ export async function deleteCohort(
 
     await conn.query("DELETE FROM training_cohorts WHERE id = ?", [id]);
     return "deleted";
+  });
+}
+
+// Saves (or replaces) a cohort's flyer. Returns the new public token,
+// or null if the cohort doesn't exist.
+export async function setCohortFlyer(
+  id: number,
+  data: Buffer,
+  mime: string
+): Promise<string | null> {
+  return withLock(COHORT_LOCK, async (conn) => {
+    const [found] = await conn.query<RowDataPacket[]>(
+      "SELECT id FROM training_cohorts WHERE id = ? FOR UPDATE",
+      [id]
+    );
+    if (found.length === 0) return null;
+
+    // "Upsert": insert, or if this cohort already has a flyer, replace it.
+    // execute() sends the image as raw bytes instead of a giant text literal.
+    await conn.execute(
+      `INSERT INTO cohort_flyers (cohort_id, mime_type, data) VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE mime_type = VALUES(mime_type), data = VALUES(data)`,
+      [id, mime, data]
+    );
+
+    // A fresh random token per upload. A new token means a new URL, so browsers
+    // never show an old cached image after a replacement.
+    const token = `${id}-${Date.now()}-${randomBytes(4).toString("hex")}`;
+    await conn.query("UPDATE training_cohorts SET flyer_path = ? WHERE id = ?", [token, id]);
+    return token;
+  });
+}
+
+// Returns false if the cohort doesn't exist
+export async function removeCohortFlyer(id: number): Promise<boolean> {
+  return withLock(COHORT_LOCK, async (conn) => {
+    const [found] = await conn.query<RowDataPacket[]>(
+      "SELECT id FROM training_cohorts WHERE id = ? FOR UPDATE",
+      [id]
+    );
+    if (found.length === 0) return false;
+
+    await conn.query("DELETE FROM cohort_flyers WHERE cohort_id = ?", [id]);
+    await conn.query("UPDATE training_cohorts SET flyer_path = NULL WHERE id = ?", [id]);
+    return true;
   });
 }
